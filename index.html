@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Happy Birthday, Sister 🎂</title>
+<title></title>
 <meta name="description" content="A magical birthday surprise, made with love.">
 
 <!-- Fonts: Fraunces for emotional display headlines, Outfit for clean readable body text -->
@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
 
 <!-- Floating music toggle button -->
 <button id="music-toggle" class="music-btn" aria-label="Play birthday music" aria-pressed="false">
-  <span class="music-icon">🎵</span>
+  <span class="music-icon"></span>
 </button>
 <audio id="bg-music" src="assets/music/birthday.mp3" loop preload="none"></audio>
 
@@ -29,11 +29,8 @@
 <!-- ============================= -->
 <section id="opening-screen" class="screen opening-screen">
   <div class="opening-content">
-    <p class="opening-line" data-line="1">Hey <span data-sister-name></span>... <span class="heart-emoji">❤️</span></p>
-    <p class="opening-line" data-line="2">Today isn't just another day...</p>
-    <p class="opening-line opening-line--final" data-line="3">Today is <em>YOUR</em> special day. 🎂✨</p>
-    <button id="open-surprise-btn" class="glow-btn ripple">
-      <span>Open Your Surprise</span> <span aria-hidden="true">🎁</span>
+    <button id="open-surprise-btn" class="glow-btn ripple" aria-label="Click here to open your birthday surprise">
+      <span>Click Here</span>
     </button>
   </div>
 </section>
@@ -75,54 +72,12 @@ I hope this birthday brings you endless happiness, success, love and everything 
 
 Never stop smiling and never stop being the amazing person you are.
 
-Happy Birthday once again, <span data-sister-name></span>! ❤️</p>
+Happy Birthday once again, DiDi❤️</p>
     </div>
   </section>
 
   <!-- ============================= -->
-  <!-- 4. MEMORY SECTION             -->
-  <!-- ============================= -->
-  <section id="memories" class="section memories-section">
-    <h2 class="section-heading">Our Beautiful Memories <span aria-hidden="true">📸</span></h2>
-    <div class="gallery" id="gallery">
-      <button class="photo-card reveal" data-caption="Beautiful Memories ❤️">
-        <img src="assets/images/sister1.jpg" alt="Beautiful Memories" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Beautiful Memories ❤️</span>
-      </button>
-      <button class="photo-card reveal" data-caption="Crazy Moments 😂">
-        <img src="assets/images/sister2.jpg" alt="Crazy Moments" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Crazy Moments 😂</span>
-      </button>
-      <button class="photo-card reveal" data-caption="Best Days ✨">
-        <img src="assets/images/sister3.jpg" alt="Best Days" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Best Days ✨</span>
-      </button>
-      <button class="photo-card reveal" data-caption="Forever Memories 💕">
-        <img src="assets/images/sister4.jpg" alt="Forever Memories" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Forever Memories 💕</span>
-      </button>
-      <button class="photo-card reveal" data-caption="Family Time 🥰">
-        <img src="assets/images/sister5.jpg" alt="Family Time" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Family Time 🥰</span>
-      </button>
-      <button class="photo-card reveal" data-caption="Always Together ❤️">
-        <img src="assets/images/sister6.jpg" alt="Always Together" loading="lazy" onerror="this.closest('.photo-card').classList.add('photo-card--placeholder')">
-        <span class="photo-caption">Always Together ❤️</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- Fullscreen photo modal -->
-  <div id="photo-modal" class="photo-modal" hidden>
-    <button id="modal-close" class="modal-close" aria-label="Close photo">&times;</button>
-    <div class="modal-inner">
-      <img id="modal-img" src="" alt="">
-      <p id="modal-caption" class="modal-caption"></p>
-    </div>
-  </div>
-
-  <!-- ============================= -->
-  <!-- 5. WHY YOU'RE SPECIAL         -->
+  <!-- 4. WHY YOU'RE SPECIAL         -->
   <!-- ============================= -->
   <section id="special" class="section special-section">
     <h2 class="section-heading">Why You're Special</h2>
@@ -132,22 +87,15 @@ Happy Birthday once again, <span data-sister-name></span>! ❤️</p>
       <div class="special-card reveal"><span class="special-icon">😂</span><p>Always Makes Us Laugh</p></div>
       <div class="special-card reveal"><span class="special-icon">🌸</span><p>Caring Sister</p></div>
       <div class="special-card reveal"><span class="special-icon">💫</span><p>Strong &amp; Amazing</p></div>
-      <div class="special-card reveal"><span class="special-icon">👑</span><p>One &amp; Only Sister</p></div>
+    
     </div>
   </section>
 
   <!-- ============================= -->
-  <!-- 6. BIRTHDAY COUNTDOWN         -->
+  <!-- 6. TODAY'S DATE                -->
   <!-- ============================= -->
   <section id="countdown-section" class="section countdown-section">
-    <h2 class="section-heading">Counting Down To Your Special Moment <span aria-hidden="true">⏳❤️</span></h2>
-    <div id="countdown" class="countdown">
-      <div class="countdown-unit"><span id="cd-days" class="countdown-num">00</span><span class="countdown-label">Days</span></div>
-      <div class="countdown-unit"><span id="cd-hours" class="countdown-num">00</span><span class="countdown-label">Hours</span></div>
-      <div class="countdown-unit"><span id="cd-mins" class="countdown-num">00</span><span class="countdown-label">Minutes</span></div>
-      <div class="countdown-unit"><span id="cd-secs" class="countdown-num">00</span><span class="countdown-label">Seconds</span></div>
-    </div>
-    <p id="countdown-arrived" class="countdown-arrived" hidden></p>
+    <p id="today-date" class="today-date"></p>
   </section>
 
   <!-- ============================= -->
@@ -167,24 +115,7 @@ Happy Birthday once again, <span data-sister-name></span>! ❤️</p>
   </section>
 
   <!-- ============================= -->
-  <!-- 8. SECRET SURPRISE            -->
-  <!-- ============================= -->
-  <section id="secret" class="section secret-section">
-    <div id="secret-locked" class="secret-locked">
-      <p class="secret-title"><span aria-hidden="true">🔒</span> There's One More Surprise...</p>
-      <button id="unlock-btn" class="glow-btn ripple">
-        <span>Unlock Surprise</span> <span aria-hidden="true">💝</span>
-      </button>
-    </div>
-    <div id="secret-countdown" class="secret-countdown" hidden></div>
-    <div id="secret-reveal" class="secret-reveal" hidden>
-      <p class="secret-reveal-line">You are one of the most precious people in my life. <span aria-hidden="true">❤️</span></p>
-      <p class="secret-reveal-line secret-reveal-line--big">Happy Birthday, <span data-sister-name></span>! <span aria-hidden="true">🎂✨</span></p>
-    </div>
-  </section>
-
-  <!-- ============================= -->
-  <!-- 9. FINAL SECTION              -->
+  <!-- 8. FINAL SECTION              -->
   <!-- ============================= -->
   <section id="finale" class="section finale-section">
     <p class="finale-once-again">Once Again...</p>
