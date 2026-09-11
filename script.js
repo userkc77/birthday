@@ -4,11 +4,12 @@
 // 🎂 BIRTHDAY WEBSITE SETTINGS
 // ==========================================
 // These are the ONLY two values you normally need to edit.
-// Everything on the site (the opening screen, the hero heading,
-// the personal message, the secret surprise, the finale, and the
-// countdown) reads from these two variables automatically.
+// SISTER_NAME appears everywhere on the site (hero heading, the
+// personal message, the finale). BIRTHDAY is kept here in case you
+// want to reuse it elsewhere; the page currently just shows today's
+// date instead of counting down to it.
 
-const SISTER_NAME = "Your Sister's Name";
+const SISTER_NAME = "Eliza Chapagain";
 const BIRTHDAY = "2026-09-25T00:00:00";
 
 // ==========================================
@@ -35,17 +36,10 @@ const BIRTHDAY = "2026-09-25T00:00:00";
      1. Opening screen sequence
   ------------------------------------------------------------ */
   function runOpeningSequence() {
-    const lines = document.querySelectorAll(".opening-line");
     const openBtn = document.getElementById("open-surprise-btn");
-    const delays = [200, 1400, 2700];
-
-    lines.forEach((line, i) => {
-      setTimeout(() => line.classList.add("is-visible"), delays[i] ?? i * 1200);
-    });
-
     setTimeout(() => {
       openBtn.classList.add("is-visible");
-    }, delays[delays.length - 1] + 900);
+    }, 150);
   }
 
   /* ------------------------------------------------------------
@@ -64,8 +58,18 @@ const BIRTHDAY = "2026-09-25T00:00:00";
     const reveal = () => {
       openingScreen.setAttribute("hidden", "");
       main.hidden = false;
-      window.scrollTo({ top: 0, behavior: "auto" });
       document.body.style.overflow = "";
+
+      // Auto-scroll straight to the "Happy Birthday" hero section.
+      const hero = document.getElementById("hero");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      requestAnimationFrame(() => {
+        hero.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
+      });
+
       startHeroTyping();
       startMessageTypewriter();
     };
@@ -161,116 +165,18 @@ const BIRTHDAY = "2026-09-25T00:00:00";
   }
 
   /* ------------------------------------------------------------
-     6. Photo gallery modal
+     7. Show today's date (replaces the countdown timer)
   ------------------------------------------------------------ */
-  function setupGalleryModal() {
-    const modal = document.getElementById("photo-modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalCaption = document.getElementById("modal-caption");
-    const closeBtn = document.getElementById("modal-close");
-
-    document.querySelectorAll(".photo-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        const img = card.querySelector("img");
-        const caption = card.dataset.caption || "";
-        if (img && !card.classList.contains("photo-card--placeholder")) {
-          modalImg.src = img.src;
-          modalImg.alt = img.alt;
-          modalImg.style.display = "";
-        } else {
-          modalImg.removeAttribute("src");
-          modalImg.style.display = "none";
-        }
-        modalCaption.textContent = caption;
-        modal.hidden = false;
-        document.body.style.overflow = "hidden";
-      });
+  function setupTodayDate() {
+    const el = document.getElementById("today-date");
+    if (!el) return;
+    const formatted = new Date().toLocaleDateString(undefined, {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
-
-    function closeModal() {
-      modal.hidden = true;
-      document.body.style.overflow = "";
-    }
-
-    closeBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal();
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) closeModal();
-    });
-  }
-
-  /* ------------------------------------------------------------
-     7. Countdown to BIRTHDAY (auto rolls to next year if passed)
-  ------------------------------------------------------------ */
-  function getNextBirthdayTimestamp() {
-    const configured = new Date(BIRTHDAY);
-    const now = new Date();
-
-    // If invalid, fail safely into "arrived" state.
-    if (isNaN(configured.getTime())) return null;
-
-    const next = new Date(configured.getTime());
-
-    // If the configured date/time has already passed, but it's not
-    // "today" (the birthday itself), roll forward to next year so the
-    // site stays useful year after year without editing anything else.
-    const isSameCalendarDay =
-      now.getFullYear() === configured.getFullYear() &&
-      now.getMonth() === configured.getMonth() &&
-      now.getDate() === configured.getDate();
-
-    if (!isSameCalendarDay && configured.getTime() < now.getTime()) {
-      next.setFullYear(now.getFullYear());
-      if (next.getTime() < now.getTime()) {
-        next.setFullYear(now.getFullYear() + 1);
-      }
-    }
-
-    return { target: next, isToday: isSameCalendarDay };
-  }
-
-  function setupCountdown() {
-    const daysEl = document.getElementById("cd-days");
-    const hoursEl = document.getElementById("cd-hours");
-    const minsEl = document.getElementById("cd-mins");
-    const secsEl = document.getElementById("cd-secs");
-    const countdownWrap = document.getElementById("countdown");
-    const arrivedEl = document.getElementById("countdown-arrived");
-
-    function pad(n) {
-      return String(n).padStart(2, "0");
-    }
-
-    function tick() {
-      const info = getNextBirthdayTimestamp();
-      if (!info) return;
-
-      const now = Date.now();
-      const diff = info.target.getTime() - now;
-
-      if (info.isToday || diff <= 0) {
-        countdownWrap.hidden = true;
-        arrivedEl.hidden = false;
-        arrivedEl.textContent = `🎂 It's Your Birthday, ${SISTER_NAME}! 🎉❤️`;
-        clearInterval(timer);
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      daysEl.textContent = pad(days);
-      hoursEl.textContent = pad(hours);
-      minsEl.textContent = pad(mins);
-      secsEl.textContent = pad(secs);
-    }
-
-    tick();
-    const timer = setInterval(tick, 1000);
+    el.textContent = formatted;
   }
 
   /* ------------------------------------------------------------
@@ -291,41 +197,7 @@ const BIRTHDAY = "2026-09-25T00:00:00";
   }
 
   /* ------------------------------------------------------------
-     9. Secret surprise unlock
-  ------------------------------------------------------------ */
-  function setupSecretSurprise() {
-    const unlockBtn = document.getElementById("unlock-btn");
-    const locked = document.getElementById("secret-locked");
-    const countdownBox = document.getElementById("secret-countdown");
-    const revealBox = document.getElementById("secret-reveal");
-
-    unlockBtn.addEventListener("click", () => {
-      locked.hidden = true;
-      countdownBox.hidden = false;
-
-      let count = 3;
-      countdownBox.textContent = count;
-
-      const step = () => {
-        count--;
-        if (count > 0) {
-          countdownBox.textContent = count;
-          setTimeout(step, 1000);
-        } else {
-          countdownBox.hidden = true;
-          revealBox.hidden = false;
-          burstFireworks();
-          burstHearts(30);
-          burstConfetti(90);
-        }
-      };
-
-      setTimeout(step, prefersReducedMotion ? 200 : 1000);
-    });
-  }
-
-  /* ------------------------------------------------------------
-     10. Music player (never autoplays)
+     9. Music player (never autoplays)
   ------------------------------------------------------------ */
   function setupMusic() {
     const btn = document.getElementById("music-toggle");
@@ -637,53 +509,8 @@ const BIRTHDAY = "2026-09-25T00:00:00";
     }
   }
 
-  function burstFireworks() {
-    if (prefersReducedMotion) return;
-    const colors = ["#FF4F9A", "#C77DFF", "#FFD166", "#FFFFFF"];
-    const bursts = 4;
-    for (let b = 0; b < bursts; b++) {
-      setTimeout(() => {
-        const cx = randomBetween(fxW * 0.2, fxW * 0.8);
-        const cy = randomBetween(fxH * 0.15, fxH * 0.5);
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const sparks = 36;
-        for (let i = 0; i < sparks; i++) {
-          const angle = (Math.PI * 2 * i) / sparks;
-          const speed = randomBetween(2, 5);
-          fxParticles.push({
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            size: randomBetween(2, 3.5),
-            color,
-            life: 1,
-            update() {
-              this.x += this.vx;
-              this.y += this.vy;
-              this.vy += 0.035;
-              this.vx *= 0.98;
-              this.life -= 0.012;
-            },
-            draw(ctx) {
-              ctx.save();
-              ctx.globalAlpha = Math.max(this.life, 0);
-              ctx.fillStyle = this.color;
-              ctx.shadowColor = this.color;
-              ctx.shadowBlur = 8;
-              ctx.beginPath();
-              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.restore();
-            },
-          });
-        }
-      }, b * 380);
-    }
-  }
-
   /* ------------------------------------------------------------
-     15. Init
+     13. Init
   ------------------------------------------------------------ */
   function init() {
     document.body.style.overflow = "hidden"; // locked until surprise opens
@@ -692,10 +519,8 @@ const BIRTHDAY = "2026-09-25T00:00:00";
     setupSkyCanvas();
     setupMusic();
     setupRipples();
-    setupCountdown();
+    setupTodayDate();
     setupWishCake();
-    setupSecretSurprise();
-    setupGalleryModal();
     setupScrollReveal();
 
     runOpeningSequence();
